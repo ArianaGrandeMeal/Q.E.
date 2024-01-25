@@ -16,9 +16,6 @@ class Game():
         if num_players == 5:
             self.num_rounds = 15
         
-        for i in range(self._players):
-            self._auctioneer_indexes.append(i+1)
-        
         self._new_game(self._num_rounds)
         
     # call _new_round for the appropriate number of rounds
@@ -34,13 +31,15 @@ class Game():
             self._player_scores.append(self._calculate_player_score(player, self._num_players))
 
     def _new_round(self, round_number):
+        self._round_number = round_number
+        
         # set new auctioneer
-        self._auctioneer_index = ((round_number + self._start_index) % self._num_players) + 1
+        self._auctioneer_index = ((self._round_number + self._start_index) % self._num_players) + 1
         for player in self._players:
             if self._auctioneer_index == player._player_number:
                 self._auctioneer = player._player_name
         
-        self._current_round = Round(round_number, self._auctioneer)
+        self._current_round = Round(self._round_number, self._auctioneer)
 
     def _calculate_player_score(self, player, num_players):
         pass
