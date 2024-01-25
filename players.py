@@ -1,4 +1,5 @@
 import random
+from components import ScoreCard, BidTile, IndustryToken
 
 class Player:
     def __init__(self, 
@@ -6,37 +7,27 @@ class Player:
             player_number, 
             country, 
             industry, 
-            tiles_won=None, 
-            total_spent=None):
+            tiles_won, 
+            total_spent, 
+            bid_amount,
+            score_card, 
+            bid_tile):
         
-        self.player_name = player_name
-        self.player_number = player_number
-        self.country = country
-        self.industry = industry
-        self.tiles_won = tiles_won
-        self.total_spent = total_spent
+        self._player_name = player_name
+        self._player_number = player_number
+        self._country = country
+        self._industry = industry
+        self._tiles_won = tiles_won
+        self._total_spent = total_spent
+        self._bid_amount = bid_amount
+        self._score_card = score_card
+        self._bid_tile = bid_tile
 
 class PlayerList():
     def __init__(self, _num_players):
         self._num_players = _num_players
-        self._players = []
-        self._initialize_players(self._num_players)
-    
-    def _create_player(self, i):
-        self.player_number = i+1
-        self.player_name = input(f"Player {self.player_number}, please enter your name:  ")
-        self.country = self.countries.pop(random.choice(self.countries))
-        self.industry = self.industries.pop(random.choice(self.industries))
-        self.tiles_won = []
-        self.total_spent = 0
-        return (
-            self.player_name, 
-            self.player_number, 
-            self.country, 
-            self.industry, self.tiles_won,
-            self.total_spent 
-            )
-
+        self._players = self._initialize_players(self._num_players)
+        
     
     '''
     # initialize player list as list of Player objects.  if statement ensures 
@@ -51,11 +42,40 @@ class PlayerList():
         self.num_players = num_players
         self.countries = COUNTRIES
         self.industries = INDUSTRIES
+        p_list = []
         
-        if num_players < 5:
+        if num_players < 3:
             self.countries = self.countries[:3]        
             self.industries = self.industries[:3]
     
         for i in range(self.num_players):
-            self._players.append(Player(self._create_player(i)))
+            p_list.append(Player(self._create_player(i)))
+        return p_list
+
+            
+    def _create_player(self, i):
+        self.player_number = i+1
+        self.player_name = input(f"Player {self.player_number}, please enter your name:  ")
+        self.country = self.countries.pop(random.choice(self.countries))
+        self.industry = self.industries.pop(random.choice(self.industries))
+        self.tiles_won = []
+        self.total_spent = 0
+        self.bid_amount = 0
+        self.score_card = ScoreCard(self.player_name, self.country)
+        self.bid_tile = BidTile(self.country)
+        input("Please pass controller to next player, then press 'enter' key.\n")
+        return (
+            self.player_name, 
+            self.player_number, 
+            self.country, 
+            self.industry, 
+            self.tiles_won,
+            self.total_spent,
+            self.bid_amount,
+            self.score_card,
+            self.bid_tile 
+            )
+
+    
+   
     

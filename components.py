@@ -3,7 +3,7 @@ import random
 class Deck():
     def __init__(self, num_players):
         # Company tile deck will be generated from this list.
-        BASE_COMPANY_TILES = [
+        self.BASE_COMPANY_TILES = [
             {'Country': 'China', 'Industry': 'Manufacturing', 'Points': 1, 'remove': [5]},
             {'Country': 'China', 'Industry': 'Agriculture', 'Points': 2, 'remove': [0]},
             {'Country': 'China', 'Industry': 'Housing', 'Points': 3, 'remove': [0]},
@@ -27,7 +27,6 @@ class Deck():
             {'Country': 'U.K.', 'Industry': 'Government', 'Points': 2, 'remove': [3,4]},
             ]
         self.num_players = num_players
-        self.base_tiles = BASE_COMPANY_TILES
         self.deck = self._create_company_tile_deck(self.num_players)
 
     
@@ -35,7 +34,7 @@ class Deck():
         
         # iterative comprehension of base company tile list to remove unused tiles.
         # copies base list, skipping tile if num_players is found in the tile's 'remove' value
-        initialized_deck = [self.base_tiles[i] for i in range(len(self.base_tiles)) if num_players not in self.base_tiles[i]['remove']]
+        initialized_deck = [self.BASE_COMPANY_TILES[i] for i in range(len(self.BASE_COMPANY_TILES)) if num_players not in self.BASE_COMPANY_TILES[i]['remove']]
         
         # shuffle and return deck 
         return self._shuffle_deck(initialized_deck)
@@ -48,11 +47,20 @@ class Deck():
 
 
 class ScoreCard():
-    pass
-
+    def __init__(self, player_name, country):
+        self._player_name = player_name
+        self._country = country
+        self._company_vp = 0
+        self._zero_bids = 0
+        self._nationalization = 0
+        self._industries = dict(Financial = 0, Agriculture = 0, Housing = 0, Manufacturing = 0, Government = 0)
+        
 class BidTile():
-    pass
+    def __init__(self, country):
+        self._country = country
+        self._bid_amount = 0
 
 class IndustryToken():
-    pass
+    def __init__(self, industry):
+        self._industry = industry
         
