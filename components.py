@@ -2,6 +2,7 @@ import random
 
 class Deck():
     def __init__(self, num_players):
+       
         # Company tile deck will be generated from this list.
         self.BASE_COMPANY_TILES = [
             {'Country': 'China', 'Industry': 'Manufacturing', 'Points': 1, 'remove': [5]},
@@ -26,25 +27,20 @@ class Deck():
             {'Country': 'U.K.', 'Industry': 'Finance', 'Points': 4, 'remove': [3,4]},
             {'Country': 'U.K.', 'Industry': 'Government', 'Points': 2, 'remove': [3,4]},
             ]
+        
         self.num_players = num_players
-        self.deck = self._create_company_tile_deck(self.num_players)
+        self.tiles = self._create_company_tile_deck(self.num_players)
 
     
     def _create_company_tile_deck(self, num_players):
         
         # iterative comprehension of base company tile list to remove unused tiles.
         # copies base list, skipping tile if num_players is found in the tile's 'remove' value
-        initialized_deck = [self.BASE_COMPANY_TILES[i] for i in range(len(self.BASE_COMPANY_TILES)) if num_players not in self.BASE_COMPANY_TILES[i]['remove']]
+        self.initialized_deck = [self.BASE_COMPANY_TILES[i] for i in range(len(self.BASE_COMPANY_TILES)) if num_players not in self.BASE_COMPANY_TILES[i]['remove']]
         
         # shuffle and return deck 
-        return self._shuffle_deck(initialized_deck)
-    
-    def _shuffle_deck(self, deck):
-        _shuffled_deck = []
-        while len(deck) > 0:
-            _shuffled_deck.append(deck.pop(random.choice(deck)))
-        return _shuffled_deck
-
+        random.shuffle(self.initialized_deck)
+        return self.initialized_deck
 
 class ScoreCard():
     def __init__(self, player_name, country):

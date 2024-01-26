@@ -49,22 +49,23 @@ class PlayerList():
             self.industries = self.industries[:3]
     
         for i in range(self.num_players):
-            p_list.append(Player(self._create_player(i)))
+            p = self._create_player(i)
+            p_list.append(Player(p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8]))
         return p_list
 
             
     def _create_player(self, i):
         self.player_number = i+1
         self.player_name = input(f"Player {self.player_number}, please enter your name:  ")
-        self.country = self.countries.pop(random.choice(self.countries))
-        self.industry = self.industries.pop(random.choice(self.industries))
         self.tiles_won = []
         self.total_spent = 0
         self.bid_amount = 0
+        self.country = self.countries.pop(random.randint(0, len(self.countries) - 1))
+        self.industry = self.industries.pop(random.randint(0, len(self.industries) - 1))
         self.score_card = ScoreCard(self.player_name, self.country)
         self.bid_tile = BidTile(self.country)
         input("Please pass controller to next player, then press 'enter' key.\n")
-        return (
+        return [
             self.player_name, 
             self.player_number, 
             self.country, 
@@ -73,8 +74,8 @@ class PlayerList():
             self.total_spent,
             self.bid_amount,
             self.score_card,
-            self.bid_tile 
-            )
+            self.bid_tile
+            ]
 
     
    
