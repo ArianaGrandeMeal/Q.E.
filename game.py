@@ -16,13 +16,18 @@ class Game():
         self._auctioneer = None
         self._start_index = int(random.choice(self._player_list._players._player_number))
         self._player_scores = []
+        self._winning_bid = None
         
         if num_players == 5:
             self.num_rounds = 15
         
         self._new_game()
         
+    '''
+    ON RESUME: work out how to return winning bid and award tile to winner
+    See line 38 to begin evaluating problem
     
+    '''
     
     def _new_game(self):
         # - call _new_round for the appropriate number of rounds
@@ -30,7 +35,7 @@ class Game():
         #     signify that any players who have previously placed a zero bid may do so again
         # - reset _full_cycle to False after calling _new_round
         while self._round_num <= self._num_rounds:
-            self._new_round(self._round_num, self._full_cycle)
+            self._winning_bid = self._new_round(self._round_num, self._full_cycle)
             self._round_num += 1
             self._full_cycle = False
             if (self._round_num // self._num_players) > self._cycles:

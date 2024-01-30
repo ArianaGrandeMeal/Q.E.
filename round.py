@@ -14,12 +14,14 @@ class Round:
         self._get_open_bid()
         for player in self._other_players:
             self._get_private_bid(player)
+        self._determine_winning_bid()
+        
 
     def _reveal_new_company_tile(self):
-        print(f"Round {self._round_number}.  The company tile up for auction is:\n")
-        print(f"Country: {self._current_tile[0]}") 
-        print(f"Industry: {self._current_tile[1]}")
-        print(f"Worth {self._current_tile[2]} victory points.\n")
+        print(f"Round {self._round_number}.  The company tile up for auction is:\n",
+              f"Country: {self._current_tile[0]}\n",
+              f"Industry: {self._current_tile[1]}\n",
+              f"Worth {self._current_tile[2]} victory points.\n")
         
     def _get_open_bid(self):
         print(f"{self._auctioneer}, you are the autioneer for this round.\n")
@@ -63,16 +65,16 @@ class Round:
         # Check for 3 tied bids in a row.
         # If true, eliminate tied bids and determine highest remaining bid. 
             if self._tied_bids == 3:
-                print("There are three tied bids in a row.")
-                print("The tied bids are eliminated and the highest remaining bid wins.")
+                print("There are three tied bids in a row.\n",
+                      "The tied bids are eliminated and the highest remaining bid wins.")
                 for bidder in tied_bidders:
                     del self._bids[bidder]
                 self._determine_winning_bid()
         
         # Otherwise, announce tied bid,vremove tied bids from bid dictionary, get new bids and evaluate.
-            print("The following players tied for the max bid and must bid again.")
-            print("Your bid may be more than, less than, or equal to your previous bet.")
-            print("If there are three tied bids in a row, the highest non-tied bid wins the auction.")
+            print("The following players tied for the max bid and must bid again.\n",
+                  "Your bid may be more than, less than, or equal to your previous bet.\n",
+                  "If there are three tied bids in a row, the highest non-tied bid wins the auction.")
             for bidder in tied_bidders:
                 del self._bids[bidder]
                 self._get_private_bid(bidder)
@@ -81,5 +83,12 @@ class Round:
         # If no tied bids, return winning bid
         return winning_bid
         
+    
+    def _award_tile(self, winning_bid):
+        print("If you are not the auctioneer, please pass the controller to the auctioneer and turn away from the screen.")
+        input(f"If you are the auctioneer, please press 'enter' to reveal winning bid.")
+        print(f"{self._auctioneer}, the player who won the bid is {winning_bid[0]} with an amount of {winning_bid[1]}.\n",
+              "Please announce the winning bidder's name--but not the bid amount--to the other players.")
+
        
         
