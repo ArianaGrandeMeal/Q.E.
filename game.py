@@ -54,6 +54,7 @@ class Game():
         self._new_tile = self.deck.tiles.pop(self.deck.tiles[0])
         
         # set new auctioneer
+        
         self._auctioneer_index = ((self._round_number + self._start_index) % self._num_players) + 1
         while not self._auctioneer:
             for player in self._player_list._players:

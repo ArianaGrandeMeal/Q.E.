@@ -1,32 +1,61 @@
 import random
-from components import ScoreCard, BidTile, IndustryToken
+from itertools import cycle
+
 
 class Player:
     def __init__(self, 
             player_name, 
-            player_number, 
-            country, 
-            industry, 
-            tiles_won, 
-            total_spent, 
+            player_country, 
+            player_industry,
             bid_amount,
-            score_card, 
-            bid_tile):
+            zero_bids,
+            tile_vp,
+            tile_countries,
+            tile_industries,
+            total_spent 
+            ):
         
         self._player_name = player_name
-        self._player_number = player_number
-        self._country = country
-        self._industry = industry
-        self._tiles_won = tiles_won
-        self._total_spent = total_spent
-        self._bid_amount = bid_amount
-        self._score_card = score_card
-        self._bid_tile = bid_tile
+        self._player_country = player_country
+        self._player_industry = player_industry
+        self.bid_amount = bid_amount
+        self.zero_bids = zero_bids
+        self.tile_vp = tile_vp
+        self.tile_countries = tile_countries
+        self.tile_industries = tile_industries
+        self.total_spent = total_spent
+        
+        
+        
 
 class PlayerList():
     def __init__(self, _num_players):
         self._num_players = _num_players
         self._players = self._initialize_players(self._num_players)
+        self._auctioneer_list = self._initialize_auctioneer_list(self._players)
+
+    def _create_player(self):
+        self.player_name = input(f"Player {self.player_number}, please enter your name:  ")
+        self.player_country = self.countries.pop(random.randint(0, len(self.countries) - 1))
+        self.player_industry = self.industries.pop(random.randint(0, len(self.industries) - 1))
+        self.bid_amount = 0
+        self.zero_bids = 0
+        self.tile_vp = 0
+        self.tile_countries = []
+        self.tile_industries = []
+        self.total_spent = 0
+        input("Please pass controller to next player, then press 'enter' key.\n")
+        return [
+            self.player_name, 
+            self.player_country, 
+            self.player_industry,
+            self.bid_amount,
+            self.zero_bids,
+            self.tile_vp,
+            self.tile_countries,
+            self.tile_industries,
+            self.total_spent]
+
         
     
     '''
@@ -44,39 +73,31 @@ class PlayerList():
         self.industries = INDUSTRIES
         p_list = []
         
-        if num_players < 3:
+        if num_players < 5:
             self.countries = self.countries[:3]        
             self.industries = self.industries[:3]
     
-        for i in range(self.num_players):
-            p = self._create_player(i)
+        i = 1
+        while i <= self.num_players:
+            p = self._create_player()
             p_list.append(Player(p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8]))
+            i+=1
         return p_list
 
-            
-    def _create_player(self, i):
-        self.player_number = i+1
-        self.player_name = input(f"Player {self.player_number}, please enter your name:  ")
-        self.tiles_won = []
-        self.total_spent = 0
-        self.bid_amount = 0
-        self.country = self.countries.pop(random.randint(0, len(self.countries) - 1))
-        self.industry = self.industries.pop(random.randint(0, len(self.industries) - 1))
-        self.score_card = ScoreCard(self.player_name, self.country)
-        self.bid_tile = BidTile(self.country)
-        input("Please pass controller to next player, then press 'enter' key.\n")
-        return [
-            self.player_name, 
-            self.player_number, 
-            self.country, 
-            self.industry, 
-            self.tiles_won,
-            self.total_spent,
-            self.bid_amount,
-            self.score_card,
-            self.bid_tile
-            ]
+    def _initialize_auctioneer_list(self, p_list):
+        self.p_list = p_list
+        auctioneer_list = []
+        p_list_cycle = cycle(self.p_list)
 
+        num_rounds = 16
+        if len(self.p_list) == 5:
+            num_rounds = 15
+
+        round = 1
+        while round <= num_rounds:
+            auctioneer_list.append(next(p_list_cycle[0]))
+            round += 1
+        return auctioneer_list
     
-   
+    
     
