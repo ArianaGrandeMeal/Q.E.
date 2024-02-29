@@ -1,33 +1,27 @@
-import random
 from components import Deck
-from players import PlayerList
+from players import PlayerList, AuctioneerList
 from round import Round
 
 class Game():
     def __init__(self, num_players):
         self._num_players = num_players
-        self._player_list = PlayerList(num_players)
         self.deck = Deck(num_players)
-        self._num_rounds = 16
+        self._num_rounds = len(self.deck.tiles)
+        self._player_list = PlayerList(num_players)
+        self._player_names = [player[0] for player in self._player_list._players]
+        self._auctioneer_list = AuctioneerList(self._player_names, self._num_rounds)
         self._round_num = 1
         self._cycles = 0
         self._full_cycle = False
         self._zero_bids = []
         self._auctioneer = None
-        self._start_index = int(random.choice(self._player_list._players._player_number))
         self._player_scores = []
         self._winning_bid = None
         
-        if num_players == 5:
-            self.num_rounds = 15
         
         self._new_game()
         
-    '''
-    ON RESUME: work out how to return winning bid and award tile to winner
-    See line 38 to begin evaluating problem
     
-    '''
     
     def _new_game(self):
         # - call _new_round for the appropriate number of rounds
@@ -47,28 +41,15 @@ class Game():
         for player in self._player_list:
             self._player_scores.append(self._calculate_player_score(player, self._num_players))
 
-    def _new_round(self):
+    def _new_round(self, round_num, full_cycle):
+        self._round_num = round_num
+        self._full_cycle = full_cycle
         # clear the _other_players list.  maintains bid order when new auctioneer is assigned.
-        self._other_players = []
-
+        
+        # set next tile
         self._new_tile = self.deck.tiles.pop(self.deck.tiles[0])
         
         # set new auctioneer
-        
-        self._auctioneer_index = ((self._round_number + self._start_index) % self._num_players) + 1
-        while not self._auctioneer:
-            for player in self._player_list._players:
-                if player._player_number == self._auctioneer_index:
-                    self._auctioneer = player._player_name
-
-        # set other players.
-        j = self._start_index + 1
-        while len(self._other_players) < len(self._player_list._players) - 1:
-            self._player_index = ((self._round_number + j) % self._num_players) + 1
-            for player in self._player_list._players:
-                if player._player_number == self._player_index:
-                    self._other_players.append(player._player_name)
-            j+=1
         
         # create new round instance with updated variables
         self._current_round = Round(self._round_num,

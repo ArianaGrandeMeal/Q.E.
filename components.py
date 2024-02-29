@@ -42,6 +42,12 @@ class Deck():
         random.shuffle(self.initialized_deck)
         return self.initialized_deck
 
+
+
+'''
+Currently unused items.  To be reconsidered when visual representations available.
+
+
 class ScoreCard():
     def __init__(self, player_name, country):
         self._player_name = player_name
@@ -60,3 +66,4 @@ class IndustryToken():
     def __init__(self, industry):
         self._industry = industry
         
+'''

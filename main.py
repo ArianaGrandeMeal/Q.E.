@@ -28,7 +28,7 @@ def main():
         
     # get number of players
     _num_players = input("Please enter the number of players.")
-    while 3 <= _num_players <= 5:
+    while 5 < _num_players < 3:
         print("Invalid player count.  Number of players must be between 3 and 5.\n")
         _num_players = input("Please enter the number of players.")
     

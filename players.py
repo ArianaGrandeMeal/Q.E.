@@ -1,6 +1,15 @@
+'''
+players file should be complete.  Used to generate:
+- new Player instances: stores all game info for each player
+- new PlayerList instance: stores each instance of Player in a list for game access
+- new AuctioneerList instance:  stores repeating list of each player's name to designate auctioneer for each round
+
+'''
+
+
+
 import random
 from itertools import cycle
-
 
 class Player:
     def __init__(self, 
@@ -25,17 +34,15 @@ class Player:
         self.tile_industries = tile_industries
         self.total_spent = total_spent
         
-        
-        
 
 class PlayerList():
     def __init__(self, _num_players):
         self._num_players = _num_players
         self._players = self._initialize_players(self._num_players)
-        self._auctioneer_list = self._initialize_auctioneer_list(self._players)
+        
 
     def _create_player(self):
-        self.player_name = input(f"Player {self.player_number}, please enter your name:  ")
+        self.player_name = input("Please enter your name:  ")
         self.player_country = self.countries.pop(random.randint(0, len(self.countries) - 1))
         self.player_industry = self.industries.pop(random.randint(0, len(self.industries) - 1))
         self.bid_amount = 0
@@ -56,7 +63,6 @@ class PlayerList():
             self.tile_industries,
             self.total_spent]
 
-        
     
     '''
     # initialize player list as list of Player objects.  if statement ensures 
@@ -84,20 +90,22 @@ class PlayerList():
             i+=1
         return p_list
 
-    def _initialize_auctioneer_list(self, p_list):
-        self.p_list = p_list
-        auctioneer_list = []
-        p_list_cycle = cycle(self.p_list)
+class AuctioneerList():
+    def __init__(self, names, num_rounds):
+        self._names = names
+        self._num_rounds = num_rounds
+        self._auctioneer_list = self._initialize_auctioneer_list(self._names, self._num_rounds)
 
-        num_rounds = 16
-        if len(self.p_list) == 5:
-            num_rounds = 15
+    def _initialize_auctioneer_list(self, names, num_rounds):
+        self._names = names
+        auctioneers = []
+        names_cycle = cycle(self._names)
 
         round = 1
         while round <= num_rounds:
-            auctioneer_list.append(next(p_list_cycle[0]))
+            auctioneers.append(next(names_cycle))
             round += 1
-        return auctioneer_list
+        return auctioneers
     
     
     

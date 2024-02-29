@@ -13,7 +13,7 @@ Generate deck
 
 Start rounds:
 
-While tiles in deck < 0
+While tiles in deck > 0
 - Determine round number
 - Assign auctioneer = auctioneer_list[round_number]
 - Generate list of other players 
